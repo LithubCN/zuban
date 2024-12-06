@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<script src="main.js">
+
+</script>
+<style>
+.description {
+position: relative;
+    top: 350px;
+    width: 100%;
+    border-style: solid;
+    border-color: beige;
+}
+.description:after {
+    content:'';
+    display:block;
+    clear:both;
+}
+.colour{
+    width:20px;
+    height:20px;
+    margin: 5px;
+    float:left;
+}
+.colour_d{
+    height:20px;
+    margin: 5px;
+    float:left;
+}
+.center {
+position: absolute;
+left: 0;
+top: 50%;
+width: 100%;
+text-align: center;
+font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+    <div id="message"></div>
+    <div>
+        Dimensions of the container:
+        <input id="tank_h" name="tank_height" value="">
+        x
+        <input id="tank_w" name="tank_width"  value=""> cm x cm
+        <button name="add_tank" id="add_tank">Add container</button>
+    </div>
+    <div>
+        Add box:
+        Box name: <input id="box_name" name="box_name" value="">
+        <input id="box_h" name="box_height" value=""> x <input id="box_w" name="box_width"  value=""> cm x cm
+        <button name="add_box" id="add_box">Add box</button>
+    </div>
+    <div><button name="prepare" id="prepare" disabled="true"> Prepare boxes</button></div>
+    <div>Container:<span id="container_dimensions"></span><br/>
+        List boxes:
+        <ul id="boxes_list">
+
+        </ul>
+        Oversized boxes:
+        <ul id="oversized_boxes_list"></ul>
+    </div>
+    <button name="insert_boxes"    id="insert_boxes" disabled="true">INSERT BOXES</button>
+
+    <div id="select_box">
+        <select id="select-method" name="select-method" disabled="true">
+
+        </select>
+    </div>
+    <div>
+        <canvas id="show_filled_container"></canvas>
+        </div>
+
+    <div class="description" id="description0">
+        <div class="colour" id="square0"></div>
+        <div class="colour_d" id="colour_d0"></div>
+    </div>
+
+<script type="text/javascript">
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+var ctx = [];
+
+
+var table_of_squares = [];
+var table_of_description = [];
+var i = 0;
+//var przesuniecie = freeBoxes[i].width + 100;
+
+
+function duplicate(name) {
+    var original = document.getElementById(name + i);
+    var clone = original.cloneNode(true);
+    clone.id = name + (i + 1);
+    original.parentNode.appendChild(clone);
+}
+
+
+function show_cargo(chosenCargo){
+    i = 0;
+    var canvas = document.getElementById("show_filled_container");
+    canvas.width = container.width;
+    canvas.height = container.height;
+    canvas.style.backgroundColor = '#E8EDF2';
+    document.getElementById('description0').innerHTML = '<div class="colour" id="square0"></div>'+
+        '<div class="colour_d" id="colour_d0"></div>';
+   // table_of_squares.length = 0;
+   // table_of_description.length = 0;
+	for(i; i < chosenCargo.length; i++){
+        ctx[i] = canvas.getContext("2d");
+
+       // if(ctx[0]) {ctx[0].rotate(20*Math.PI/180);}
+        let box_kolor = getRandomColor();
+        ctx[i].fillStyle = box_kolor;
+
+        ctx[i].fillRect(chosenCargo[i].x, chosenCargo[i].y, chosenCargo[i].width, chosenCargo[i].height);
+       // ctx[i].fillStyle = 'white';
+      // ctx[i].font = "20px Arial";
+      //  ctx[i].fillText(chosenCargo[i].name,chosenCargo[i].x, chosenCargo[i].y);
+
+
+
+        duplicate('square');
+        duplicate('colour_d');
+
+        table_of_squares[i] = document.getElementById('square' + i);
+        table_of_squares[i].style.backgroundColor = box_kolor;
+
+        table_of_description[i] = document.getElementById('colour_d' + i);
+        table_of_description[i].innerHTML = chosenCargo[i].name + ": " + chosenCargo[i].width +" x "+chosenCargo[i].height;
+
+    };
+
+}
+
+
+
+var select_method = document.getElementById("select-method");
+    select_method.addEventListener("change", function(){
+        show_cargo(cargo[select_method.value].usedBoxes);
+    }
+);
+
+
+</script>
+
+</body>
+
+
