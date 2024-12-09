@@ -108,43 +108,70 @@ function duplicate(name) {
 }
 
 
+// function show_cargo(chosenCargo){
+//     i = 0;
+//     var canvas = document.getElementById("show_filled_container");
+//     canvas.width = container.width;
+//     canvas.height = container.height;
+//     canvas.style.backgroundColor = '#E8EDF2';
+//     document.getElementById('description0').innerHTML = '<div class="colour" id="square0"></div>'+
+//         '<div class="colour_d" id="colour_d0"></div>';
+//    // table_of_squares.length = 0;
+//    // table_of_description.length = 0;
+// 	for(i; i < chosenCargo.length; i++){
+//         ctx[i] = canvas.getContext("2d");
+
+//        // if(ctx[0]) {ctx[0].rotate(20*Math.PI/180);}
+//         let box_kolor = getRandomColor();
+//         ctx[i].fillStyle = box_kolor;
+
+//         ctx[i].fillRect(chosenCargo[i].x, chosenCargo[i].y, chosenCargo[i].width, chosenCargo[i].height);
+//        // ctx[i].fillStyle = 'white';
+//       // ctx[i].font = "20px Arial";
+//       //  ctx[i].fillText(chosenCargo[i].name,chosenCargo[i].x, chosenCargo[i].y);
+
+
+
+//         duplicate('square');
+//         duplicate('colour_d');
+
+//         table_of_squares[i] = document.getElementById('square' + i);
+//         table_of_squares[i].style.backgroundColor = box_kolor;
+
+//         table_of_description[i] = document.getElementById('colour_d' + i);
+//         table_of_description[i].innerHTML = chosenCargo[i].name + ": " + chosenCargo[i].width +" x "+chosenCargo[i].height;
+
+//     };
+
+// }
+
+
 function show_cargo(chosenCargo){
-    i = 0;
     var canvas = document.getElementById("show_filled_container");
-    canvas.width = container.width;
-    canvas.height = container.height;
+    var ctx = canvas.getContext("2d");
+    var scaleWidth = canvas.width / container.width; // 假设container.width是原始宽度
+    var scaleHeight = canvas.height / container.height; // 假设container.height是原始高度
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // 清除画布
     canvas.style.backgroundColor = '#E8EDF2';
-    document.getElementById('description0').innerHTML = '<div class="colour" id="square0"></div>'+
+    document.getElementById('description0').innerHTML = '<div class="colour" id="square0"></div>' +
         '<div class="colour_d" id="colour_d0"></div>';
-   // table_of_squares.length = 0;
-   // table_of_description.length = 0;
-	for(i; i < chosenCargo.length; i++){
-        ctx[i] = canvas.getContext("2d");
 
-       // if(ctx[0]) {ctx[0].rotate(20*Math.PI/180);}
-        let box_kolor = getRandomColor();
-        ctx[i].fillStyle = box_kolor;
-
-        ctx[i].fillRect(chosenCargo[i].x, chosenCargo[i].y, chosenCargo[i].width, chosenCargo[i].height);
-       // ctx[i].fillStyle = 'white';
-      // ctx[i].font = "20px Arial";
-      //  ctx[i].fillText(chosenCargo[i].name,chosenCargo[i].x, chosenCargo[i].y);
-
-
+    for(var i = 0; i < chosenCargo.length; i++){
+        var box = chosenCargo[i];
+        var box_kolor = getRandomColor();
+        ctx.fillStyle = box_kolor;
+        // 应用缩放比例
+        ctx.fillRect(box.x * scaleWidth, box.y * scaleHeight, box.width * scaleWidth, box.height * scaleHeight);
 
         duplicate('square');
         duplicate('colour_d');
-
         table_of_squares[i] = document.getElementById('square' + i);
         table_of_squares[i].style.backgroundColor = box_kolor;
-
         table_of_description[i] = document.getElementById('colour_d' + i);
-        table_of_description[i].innerHTML = chosenCargo[i].name + ": " + chosenCargo[i].width +" x "+chosenCargo[i].height;
-
+        table_of_description[i].innerHTML = box.name + ": " + (box.width * scaleWidth) + " x " + (box.height * scaleHeight);
     };
-
 }
-
 
 
 var select_method = document.getElementById("select-method");
